@@ -12,6 +12,12 @@ const isChecked = ref(false);
 
 const { toDoList } = ringDataStore
 
+const focusInput = () => {
+  if (toDoDescriptionInput.value) {
+    toDoDescriptionInput.value?.focus()
+  }
+}
+
 function addTodo(list: TToDoType[], previousId: string | undefined) {
   const defaultToDo: TToDoType = { id: getUid() }
   const previousIndex: number | undefined = list.findIndex((item) => item.id === previousId)
@@ -27,11 +33,6 @@ function removeToDo(list: TToDoType[], currentId: string) {
   list.splice(idx, 1)
 }
 
-const focusInput = () => {
-  if (toDoDescriptionInput.value) {
-    toDoDescriptionInput.value?.focus()
-  }
-}
 onMounted(focusInput)
 </script>
 
@@ -54,10 +55,9 @@ onMounted(focusInput)
     <input
       ref="toDoDescriptionInput"
       class="todo-list-item__input"
-      @keyup.enter="
+      @keypress.enter="
         () => {
           addTodo(toDoList, id)
-          focusInput()
         }
       "
       @keyup="

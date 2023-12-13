@@ -18,8 +18,10 @@ function addFirstTodo() {
 document.addEventListener('keypress', function (event) {
   if (event.key === 'Enter' && toDoList.length === 0) {
     addFirstTodo()
+    event.preventDefault();
   }
-})
+}
+)
 
 </script>
 
