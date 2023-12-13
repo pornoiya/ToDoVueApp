@@ -3,18 +3,15 @@ import { getUid } from '@/shared/utils'
 import { ringDataStore } from '@/shared/store'
 type TToDoType = {
   id: string
-  description: string
-  isChecked: boolean
 }
 defineProps<
-  TToDoType & {
-    list: TToDoType[]
-  }
+  TToDoType
 >()
 
+const { toDoList } = ringDataStore;
+
 function addTodo(list: TToDoType[], previousId: string | undefined) {
-  console.log('list', list);
-  const defaultToDo: TToDoType = { id: getUid(), description: '', isChecked: false }
+  const defaultToDo: TToDoType = { id: getUid() }
   const previousIndex: number | undefined = list.findIndex((item) => item.id === previousId)
   if (previousIndex === undefined || previousIndex === list.length - 1) {
     list.push(defaultToDo)
@@ -33,7 +30,6 @@ function removeToDo(list: TToDoType[], currentId: string) {
   <div class="todo-list-item">
     <input
       type="checkbox"
-      :checked="isChecked"
       :name="id"
       :id="id"
       @input="
@@ -48,13 +44,12 @@ function removeToDo(list: TToDoType[], currentId: string) {
     <label :for="id" class="todo-list-item__checkbox"></label>
     <input
       class="todo-list-item__input"
-      :value="description"
-      @keyup.enter="addTodo(list, id)"
+      @keyup.enter="addTodo(toDoList, id)"
       @keyup="
         (event) => {
           // @ts-ignore
           if (event.key === 'Backspace' && event.target?.value?.length === 0) {
-            removeToDo(list, id)
+            removeToDo(toDoList, id)
           }
         }
       "

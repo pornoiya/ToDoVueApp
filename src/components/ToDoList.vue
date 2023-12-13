@@ -3,29 +3,26 @@ import type { TToDoListItem } from '@/shared/types'
 import { getUid, getPercentage } from '@/shared/utils'
 import ToDoListItem from './ToDoListItem.vue'
 import ToDoRing from './ToDoRing.vue'
-import {ringDataStore} from '@/shared/store'
-
-import { ref } from 'vue'
+import { ringDataStore } from '@/shared/store'
 
 defineProps<{
   title: string
-  // toDoList: TToDoListItem[] | undefined
 }>()
-const toDoList = ref<TToDoListItem[]>([])
+const { toDoList } = ringDataStore
 
 function addFirstTodo() {
-  const defaultToDo: TToDoListItem = { id: getUid(), description: '', isChecked: false }
-  toDoList.value.push(defaultToDo)
+  const defaultToDo: TToDoListItem = { id: getUid() }
+  toDoList.push(defaultToDo)
 }
 
 document.addEventListener('keypress', function (event) {
-  if (event.key === 'Enter' && toDoList.value.length === 0) {
+  if (event.key === 'Enter' && toDoList.length === 0) {
     addFirstTodo()
   }
 })
 
 const data = document.getElementsByClassName('"todo-list-item__input')
-console.log('data', data);
+console.log('data', data)
 </script>
 
 <template>
@@ -37,17 +34,12 @@ console.log('data', data);
       </h2>
 
       <div class="to-do-list">
-          <ToDoListItem
-          v-for="toDo in toDoList"
-          :key="toDo.id"
-          :description="toDo.description"
-          :is-checked="toDo.isChecked"
-          :id="toDo.id"
-          :list="toDoList"
-        />
+        <ToDoListItem v-for="toDo in toDoList" :key="toDo.id" :id="toDo.id" :list="toDoList" />
       </div>
     </div>
-    <ToDoRing :ring-progress-percent="getPercentage(ringDataStore.completedTasksCount, toDoList.length)" />
+    <ToDoRing
+      :ring-progress-percent="getPercentage(ringDataStore.completedTasksCount, toDoList.length)"
+    />
   </div>
 </template>
 

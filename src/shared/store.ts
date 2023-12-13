@@ -2,12 +2,12 @@ import type { TToDoListItem } from './types'
 import { reactive } from 'vue'
 
 export const ringDataStore = reactive<{
-  tasksList: TToDoListItem[],
+  toDoList: TToDoListItem[],
   completedTasksCount: number;
   incrementCompletedTasksCount: () => void;
   decrementCompletedTasksCount: () => void;
 }>({
-  tasksList: [],
+  toDoList: [],
   completedTasksCount: 0,
   incrementCompletedTasksCount() {
     this.completedTasksCount++
