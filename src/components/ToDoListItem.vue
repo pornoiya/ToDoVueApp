@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { getUid } from '@/shared/utils'
 import { ringDataStore } from '@/shared/store'
+import { ref, onMounted } from 'vue'
 type TToDoType = {
   id: string
 }
-defineProps<
-  TToDoType
->()
+defineProps<TToDoType>()
 
-const { toDoList } = ringDataStore;
+const toDoDescriptionInput = ref('')
+const isChecked = ref(false);
+
+const { toDoList } = ringDataStore
 
 function addTodo(list: TToDoType[], previousId: string | undefined) {
   const defaultToDo: TToDoType = { id: getUid() }
@@ -24,6 +26,13 @@ function removeToDo(list: TToDoType[], currentId: string) {
   const idx = list.findIndex((x) => x.id === currentId)
   list.splice(idx, 1)
 }
+
+const focusInput = () => {
+  if (toDoDescriptionInput.value) {
+    toDoDescriptionInput.value?.focus()
+  }
+}
+onMounted(focusInput)
 </script>
 
 <template>
@@ -34,22 +43,28 @@ function removeToDo(list: TToDoType[], currentId: string) {
       :id="id"
       @input="
         (event) => {
-          // @ts-ignore
           event.target.checked
             ? ringDataStore.incrementCompletedTasksCount()
             : ringDataStore.decrementCompletedTasksCount()
+            isChecked = !isChecked
         }
       "
     />
     <label :for="id" class="todo-list-item__checkbox"></label>
     <input
+      ref="toDoDescriptionInput"
       class="todo-list-item__input"
-      @keyup.enter="addTodo(toDoList, id)"
+      @keyup.enter="
+        () => {
+          addTodo(toDoList, id)
+          focusInput()
+        }
+      "
       @keyup="
         (event) => {
-          // @ts-ignore
           if (event.key === 'Backspace' && event.target?.value?.length === 0) {
             removeToDo(toDoList, id)
+            if (isChecked) {ringDataStore.decrementCompletedTasksCount();}
           }
         }
       "

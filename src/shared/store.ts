@@ -14,5 +14,5 @@ export const ringDataStore = reactive<{
   },
   decrementCompletedTasksCount() {
     if (this.completedTasksCount > 0) this.completedTasksCount--
-  }
+  },
 })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TToDoListItem } from '@/shared/types'
-import { getUid, getPercentage } from '@/shared/utils'
 import ToDoListItem from './ToDoListItem.vue'
+import { getUid, getPercentage } from '@/shared/utils'
 import ToDoRing from './ToDoRing.vue'
 import { ringDataStore } from '@/shared/store'
 
@@ -21,8 +21,6 @@ document.addEventListener('keypress', function (event) {
   }
 })
 
-const data = document.getElementsByClassName('"todo-list-item__input')
-console.log('data', data)
 </script>
 
 <template>
@@ -33,6 +31,7 @@ console.log('data', data)
         // Press Enter to add a to-do
       </h2>
 
+      
       <div class="to-do-list">
         <ToDoListItem v-for="toDo in toDoList" :key="toDo.id" :id="toDo.id" :list="toDoList" />
       </div>
