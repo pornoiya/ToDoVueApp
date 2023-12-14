@@ -30,7 +30,10 @@ document.addEventListener('keypress', function (event) {
     <div class="todo-container">
       <input class="to-do-head-input" :value="title" id="title" />
       <h2 className="empty-to-do-list-tip" v-if="!toDoList.length">
-        // Press Enter to add a to-do
+        // Press Enter to add a to-do,
+        </h2>
+        <h2 className="empty-to-do-list-tip" v-if="!toDoList.length">
+        ← Backspace to delete
       </h2>
 
       
