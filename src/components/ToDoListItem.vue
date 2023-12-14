@@ -30,6 +30,8 @@ function addTodo(list: TToDoType[], previousId: string | undefined) {
 
 function removeToDo(list: TToDoType[], currentId: string) {
   const idx = list.findIndex((x) => x.id === currentId)
+  const inputs = document.getElementsByClassName('todo-list-item__input')
+  inputs?.[idx - 1]?.focus();
   list.splice(idx, 1)
 }
 
